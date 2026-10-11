@@ -1,0 +1,10 @@
+{
+    "name": "cu-internal-marks-calculator",
+    "version": "1.0.0",
+    "description": "Chandigarh University Internal Marks Calculator - Vercel Deployable",
+    "private": true,
+    "scripts": {
+        "dev": "npx serve .",
+        "deploy": "vercel --prod"
+    }
+}

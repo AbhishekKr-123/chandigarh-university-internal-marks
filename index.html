@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CU Internal Marks Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+            </div>
+            <h1>CU Internal Marks Calculator</h1>
+            <p class="subtitle">Chandigarh University — Semester Internal Marks Calculator</p>
+        </header>
+
+        <div class="controls">
+            <div class="add-subject-bar">
+                <select id="subjectType">
+                    <option value="hybrid">Hybrid Subject</option>
+                    <option value="theory">Theory Subject</option>
+                    <option value="practical">Practical Subject</option>
+                    <option value="specialization">Specialization Subject</option>
+                </select>
+                <input type="text" id="subjectName" placeholder="Subject name (e.g., Computer Networks)">
+                <button id="addSubjectBtn" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add Subject
+                </button>
+            </div>
+        </div>
+
+        <div id="subjectsContainer" class="subjects-grid"></div>
+
+        <div id="summarySection" class="summary hidden">
+            <h2>Summary</h2>
+            <div class="summary-cards" id="summaryCards"></div>
+            <div class="grand-total">
+                <span>Grand Total Internal Marks:</span>
+                <span id="grandTotal">0</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>Based on Chandigarh University Excel formula sheet</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
