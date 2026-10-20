@@ -152,12 +152,38 @@ h1 {
 }
 
 .subjects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    display: flex;
     gap: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.25rem 0.25rem 1rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.subjects-grid::-webkit-scrollbar {
+    height: 10px;
+}
+
+.subjects-grid::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-radius: 999px;
+}
+
+.subjects-grid::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+}
+
+.subjects-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
 }
 
 .subject-card {
+    flex: 0 0 440px;
+    max-width: 440px;
+    scroll-snap-align: start;
     background: var(--surface);
     border-radius: var(--radius);
     border: 1px solid var(--border);
@@ -179,10 +205,50 @@ h1 {
     gap: 0.75rem;
 }
 
+.subject-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    flex: 1;
+}
+
+.subject-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.btn-clear {
+    background: transparent;
+    color: var(--warning);
+    border: 1px solid var(--warning);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+.btn-clear:hover {
+    background: var(--warning);
+    color: #1a1a1a;
+}
+
+.btn-clear-all {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 0.625rem 1.25rem;
+}
+
+.btn-clear-all:hover {
+    background: var(--surface-light);
+    color: var(--text);
+    border-color: var(--text-muted);
+}
+
 .subject-header h3 {
     font-size: 1.1rem;
     font-weight: 600;
-    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -386,8 +452,9 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .subjects-grid {
-        grid-template-columns: 1fr;
+    .subject-card {
+        flex: 0 0 88vw;
+        max-width: 88vw;
     }
 
     .add-subject-bar {

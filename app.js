@@ -83,6 +83,7 @@ let subjectIdCounter = 0;
 
 // DOM Elements
 const addSubjectBtn = document.getElementById('addSubjectBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
 const subjectTypeSelect = document.getElementById('subjectType');
 const subjectNameInput = document.getElementById('subjectName');
 const subjectsContainer = document.getElementById('subjectsContainer');
@@ -103,6 +104,10 @@ subjectNameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         addSubjectBtn.click();
     }
+});
+
+clearAllBtn.addEventListener('click', () => {
+    clearAllSubjects();
 });
 
 function addSubject(type, name) {
@@ -149,9 +154,14 @@ function renderSubjectCard(subject) {
 
     card.innerHTML = `
         <div class="subject-header">
-            <h3>${escapeHtml(subject.name)}</h3>
-            <span class="subject-type-badge ${template.badgeClass}">${template.label}</span>
-            <button class="btn btn-danger" onclick="removeSubject(${subject.id})">Remove</button>
+            <div class="subject-title">
+                <h3>${escapeHtml(subject.name)}</h3>
+                <span class="subject-type-badge ${template.badgeClass}">${template.label}</span>
+            </div>
+            <div class="subject-actions">
+                <button class="btn btn-clear" onclick="clearSubject(${subject.id})">Clear</button>
+                <button class="btn btn-danger" onclick="removeSubject(${subject.id})">Remove</button>
+            </div>
         </div>
         <div class="subject-body">
             <table class="marks-table">
@@ -175,6 +185,11 @@ function renderSubjectCard(subject) {
     `;
 
     subjectsContainer.appendChild(card);
+
+    // Scroll the new card into view
+    requestAnimationFrame(() => {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' });
+    });
 
     // Add input listeners
     card.querySelectorAll('input[type="number"]').forEach(input => {
@@ -257,12 +272,66 @@ function updateSummary() {
 }
 
 function removeSubject(id) {
-    subjects = subjects.filter(s => s.id !== id);
-    const card = document.querySelector(`.subject-card[data-id="${id}"]`);
+    // dataset.id is a string, subject.id is a number — normalise before comparing
+    const numericId = Number(id);
+    subjects = subjects.filter(s => s.id !== numericId);
+    const card = document.querySelector(`.subject-card[data-id="${numericId}"]`);
     if (card) {
         card.remove();
     }
     updateSummary();
+}
+
+// Clear all marks entered in a single subject (keeps the subject itself)
+function clearSubject(id) {
+    const numericId = Number(id);
+    const subject = subjects.find(s => s.id === numericId);
+    if (!subject) return;
+
+    // Reset the data model
+    subject.components.forEach(comp => {
+        comp.obtained = null;
+    });
+
+    // Reset the inputs
+    const card = document.querySelector(`.subject-card[data-id="${id}"]`);
+    if (card) {
+        card.querySelectorAll('input[type="number"]').forEach(input => {
+            input.value = '';
+            input.classList.remove('invalid');
+        });
+    }
+
+    recalculateSubject(subject);
+    updateSummary();
+    showToast(`Cleared marks for "${subject.name}"`, 'info');
+}
+
+// Clear marks for every subject at once
+function clearAllSubjects() {
+    if (subjects.length === 0) {
+        showToast('No subjects to clear', 'info');
+        return;
+    }
+
+    subjects.forEach(subject => {
+        subject.components.forEach(comp => {
+            comp.obtained = null;
+        });
+
+        const card = document.querySelector(`.subject-card[data-id="${subject.id}"]`);
+        if (card) {
+            card.querySelectorAll('input[type="number"]').forEach(input => {
+                input.value = '';
+                input.classList.remove('invalid');
+            });
+        }
+
+        recalculateSubject(subject);
+    });
+
+    updateSummary();
+    showToast('Cleared all subjects', 'info');
 }
 
 function escapeHtml(text) {
@@ -292,5 +361,7 @@ function showToast(message, type = 'info') {
     }, 2500);
 }
 
-// Expose removeSubject to global scope for onclick
+// Expose handlers to global scope for onclick
 window.removeSubject = removeSubject;
+window.clearSubject = clearSubject;
+window.clearAllSubjects = clearAllSubjects;
