@@ -6,11 +6,26 @@ A web application for **Chandigarh University** students to calculate their seme
 
 - **4 Subject Types** — Hybrid, Theory, Practical, and Specialization (Advance C Programming)
 - **Exact Excel Formulas** — Replicates the official CU internal marks calculation logic
+- **Horizontal Scrolling Layout** — Subjects display 2-per-row; scroll sideways for more
+- **Per-Subject Clear** — Reset the marks entered in any single subject card
+- **Clear All** — Reset every subject at once from the top toolbar
 - **Input Validation** — Prevents entering marks above the maximum allowed
 - **Real-time Calculation** — Internal scores update instantly as you type
 - **Summary Dashboard** — Per-subject totals and a grand total
 - **Responsive Design** — Works on desktop and mobile
 - **Zero Dependencies** — Pure HTML, CSS, and vanilla JavaScript
+
+## 🖱️ Using the Calculator
+
+1. Pick a **subject type** from the dropdown (Hybrid / Theory / Practical / Specialization)
+2. Type a **subject name** (optional — it defaults to the type name)
+3. Click **Add Subject** — a card appears and scrolls into view
+4. Enter your **obtained marks** — internal scores calculate live
+5. Use **Clear** on a card to reset just that subject, or **Clear All** to reset everything
+
+Subjects are laid out two-per-row. When you add a third or more, a horizontal
+scrollbar appears at the bottom of the strip so you can swipe sideways.
+
 
 ## 📖 Subject Types & Formulas
 
