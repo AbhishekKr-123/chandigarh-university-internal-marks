@@ -153,6 +153,7 @@ h1 {
 
 .subjects-grid {
     display: flex;
+    align-items: flex-start;
     gap: 1.5rem;
     overflow-x: auto;
     overflow-y: hidden;
