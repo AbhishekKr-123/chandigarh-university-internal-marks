@@ -5,6 +5,7 @@ A web application for **Chandigarh University** students to calculate their seme
 ## ✨ Features
 
 - **4 Subject Types** — Hybrid, Theory, Practical, and Specialization (Advance C Programming)
+- **SGPA Calculator** — Built in, using CU's official grade-point table
 - **Exact Excel Formulas** — Replicates the official CU internal marks calculation logic
 - **Horizontal Scrolling Layout** — Subjects display 2-per-row; scroll sideways for more
 - **Per-Subject Clear** — Reset the marks entered in any single subject card
@@ -81,8 +82,25 @@ scrollbar appears at the bottom of the strip so you can swipe sideways.
 | Mini Project Design | 50 | Obt ÷ 2 |
 | Attendance | 2 | Obt |
 
-## 🚀 Deployment
+## 📊 SGPA Calculator
 
+Click **SGPA Calculator** above the footer to open the built-in SGPA tool.
+
+```
+SGPA = Σ(Credit × Grade Point) / Σ(Credits)
+```
+
+| Grade | Points | | Grade | Points |
+|-------|--------|-|-------|--------|
+| O / O+ / A+ | 10 | | C+ | 6 |
+| A | 9 | | C | 5 |
+| B+ | 8 | | D | 4 |
+| B | 7 | | E / F / G / H / I | 0 |
+
+**Example:** 4 credits × A+ (10) = 40, 3 credits × A (9) = 27, 6 credits × C (5) = 30
+→ SGPA = (40 + 27 + 30) / 13 = **7.46**
+
+## 🚀 Deployment
 ### Deploy on Vercel (Recommended)
 
 1. Push this repo to GitHub

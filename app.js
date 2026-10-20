@@ -98,6 +98,16 @@ const confirmOkBtn = document.getElementById('confirmOk');
 const confirmCancelBtn = document.getElementById('confirmCancel');
 let pendingConfirmAction = null;
 
+// SGPA calculator
+const sgpaModal = document.getElementById('sgpaModal');
+const sgpaRowsEl = document.getElementById('sgpaRows');
+const sgpaCreditsEl = document.getElementById('sgpaCredits');
+const sgpaValueEl = document.getElementById('sgpaValue');
+const openSgpaBtn = document.getElementById('openSgpaBtn');
+const addSgpaRowBtn = document.getElementById('addSgpaRow');
+const sgpaResetBtn = document.getElementById('sgpaReset');
+const sgpaCloseBtn = document.getElementById('sgpaClose');
+
 // Add subject
 addSubjectBtn.addEventListener('click', () => {
     const type = subjectTypeSelect.value;
@@ -175,8 +185,11 @@ confirmModal.addEventListener('click', (e) => {
 
 // Escape cancels
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !confirmModal.classList.contains('hidden')) {
+    if (e.key !== 'Escape') return;
+    if (!confirmModal.classList.contains('hidden')) {
         closeConfirmModal();
+    } else if (!sgpaModal.classList.contains('hidden')) {
+        closeSgpaModal();
     }
 });
 
@@ -435,3 +448,118 @@ function showToast(message, type = 'info') {
 window.removeSubject = removeSubject;
 window.clearSubject = clearSubject;
 window.clearAllSubjects = clearAllSubjects;
+
+// ==========================================
+// SGPA CALCULATOR
+// SGPA = Σ(Credit × Grade Point) / Σ(Credits)
+// ==========================================
+
+const GRADE_POINTS = [
+    { label: 'O / O+ / A+', points: 10 },
+    { label: 'A', points: 9 },
+    { label: 'B+', points: 8 },
+    { label: 'B', points: 7 },
+    { label: 'C+', points: 6 },
+    { label: 'C', points: 5 },
+    { label: 'D', points: 4 },
+    { label: 'E / F / G / H / I', points: 0 }
+];
+
+let sgpaOpenedAt = 0;
+let sgpaBackdropMouseDown = false;
+
+openSgpaBtn.addEventListener('click', openSgpaModal);
+addSgpaRowBtn.addEventListener('click', addSgpaRow);
+sgpaCloseBtn.addEventListener('click', closeSgpaModal);
+
+sgpaResetBtn.addEventListener('click', () => {
+    sgpaRowsEl.innerHTML = '';
+    addSgpaRow();
+    showToast('SGPA calculator reset', 'info');
+});
+
+// Live recalculation on any input change
+sgpaRowsEl.addEventListener('input', recalcSgpa);
+sgpaRowsEl.addEventListener('change', recalcSgpa);
+
+// Remove a row (event delegation)
+sgpaRowsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.sgpa-remove');
+    if (!btn) return;
+    btn.closest('.sgpa-row').remove();
+    if (!sgpaRowsEl.children.length) {
+        addSgpaRow();
+    }
+    recalcSgpa();
+});
+
+// Backdrop click closes, but only if the press started AND ended on the overlay
+sgpaModal.addEventListener('mousedown', (e) => {
+    sgpaBackdropMouseDown = (e.target === sgpaModal);
+});
+
+sgpaModal.addEventListener('click', (e) => {
+    const isBackdropClick =
+        e.target === sgpaModal &&
+        sgpaBackdropMouseDown &&
+        (Date.now() - sgpaOpenedAt) > 300;
+
+    sgpaBackdropMouseDown = false;
+
+    if (isBackdropClick) {
+        closeSgpaModal();
+    }
+});
+
+function openSgpaModal() {
+    sgpaOpenedAt = Date.now();
+    sgpaModal.classList.remove('hidden');
+    requestAnimationFrame(() => sgpaModal.classList.add('show'));
+    if (!sgpaRowsEl.children.length) {
+        addSgpaRow();
+    }
+    const firstInput = sgpaRowsEl.querySelector('input');
+    if (firstInput) firstInput.focus();
+}
+
+function closeSgpaModal() {
+    sgpaModal.classList.remove('show');
+    setTimeout(() => sgpaModal.classList.add('hidden'), 200);
+}
+
+function addSgpaRow() {
+    const row = document.createElement('div');
+    row.className = 'sgpa-row';
+
+    const options = GRADE_POINTS
+        .map(g => `<option value="${g.points}">${g.label} (${g.points})</option>`)
+        .join('');
+
+    row.innerHTML = `
+        <input type="text" class="sgpa-name" placeholder="Subject (optional)">
+        <input type="number" class="sgpa-credits" min="0" step="0.5" placeholder="0">
+        <select class="sgpa-grade">${options}</select>
+        <button class="btn btn-danger sgpa-remove" type="button" title="Remove subject">&times;</button>
+    `;
+
+    sgpaRowsEl.appendChild(row);
+    recalcSgpa();
+}
+
+function recalcSgpa() {
+    let totalCredits = 0;
+    let weightedPoints = 0;
+
+    sgpaRowsEl.querySelectorAll('.sgpa-row').forEach(row => {
+        const credits = parseFloat(row.querySelector('.sgpa-credits').value);
+        const points = parseFloat(row.querySelector('.sgpa-grade').value);
+
+        if (!isNaN(credits) && credits > 0) {
+            totalCredits += credits;
+            weightedPoints += credits * points;
+        }
+    });
+
+    sgpaCreditsEl.textContent = Number.isInteger(totalCredits) ? totalCredits : totalCredits.toFixed(1);
+    sgpaValueEl.textContent = totalCredits > 0 ? (weightedPoints / totalCredits).toFixed(2) : '0.00';
+}

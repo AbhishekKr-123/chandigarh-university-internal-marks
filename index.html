@@ -57,6 +57,26 @@
             </div>
         </div>
 
+        <!-- SGPA calculator entry point -->
+        <button id="openSgpaBtn" class="sgpa-cta" type="button">
+            <span class="sgpa-cta-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+            </span>
+            <span class="sgpa-cta-text">
+                <strong>SGPA Calculator</strong>
+                <small>Calculate your semester SGPA from credits &amp; grades</small>
+            </span>
+            <span class="sgpa-cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </span>
+        </button>
+
         <!-- Confirmation modal -->
         <div id="confirmModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
             <div class="modal">
@@ -65,6 +85,64 @@
                 <div class="modal-actions">
                     <button id="confirmCancel" class="btn btn-cancel" type="button">Cancel</button>
                     <button id="confirmOk" class="btn btn-confirm" type="button">Clear All</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SGPA calculator modal -->
+        <div id="sgpaModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="sgpaTitle">
+            <div class="modal modal-lg">
+                <h3 id="sgpaTitle">SGPA Calculator</h3>
+                <p class="modal-formula">SGPA = &Sigma;(Credit &times; Grade Point) / &Sigma;(Credits)</p>
+
+                <div class="sgpa-table">
+                    <div class="sgpa-row sgpa-head">
+                        <span>Subject</span>
+                        <span>Credits</span>
+                        <span>Grade</span>
+                        <span></span>
+                    </div>
+                    <div id="sgpaRows"></div>
+                </div>
+
+                <div class="sgpa-add-row">
+                    <button id="addSgpaRow" class="btn btn-add-row" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Subject
+                    </button>
+                </div>
+
+                <div class="sgpa-result">
+                    <div class="sgpa-stat">
+                        <span class="label">Total Credits</span>
+                        <span class="value" id="sgpaCredits">0</span>
+                    </div>
+                    <div class="sgpa-stat">
+                        <span class="label">Your SGPA</span>
+                        <span class="value" id="sgpaValue">0.00</span>
+                    </div>
+                </div>
+
+                <details class="grade-ref">
+                    <summary>Grade Point Reference</summary>
+                    <div class="grade-ref-grid">
+                        <span>O / O+ / A+</span><b>10</b>
+                        <span>A</span><b>9</b>
+                        <span>B+</span><b>8</b>
+                        <span>B</span><b>7</b>
+                        <span>C+</span><b>6</b>
+                        <span>C</span><b>5</b>
+                        <span>D</span><b>4</b>
+                        <span>E / F / G / H / I</span><b>0</b>
+                    </div>
+                </details>
+
+                <div class="modal-actions">
+                    <button id="sgpaReset" class="btn btn-cancel" type="button">Reset</button>
+                    <button id="sgpaClose" class="btn btn-primary" type="button">Done</button>
                 </div>
             </div>
         </div>
