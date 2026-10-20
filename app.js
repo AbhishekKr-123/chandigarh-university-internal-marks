@@ -91,6 +91,13 @@ const summarySection = document.getElementById('summarySection');
 const summaryCards = document.getElementById('summaryCards');
 const grandTotalEl = document.getElementById('grandTotal');
 
+// Confirmation modal
+const confirmModal = document.getElementById('confirmModal');
+const confirmMessage = document.getElementById('confirmMessage');
+const confirmOkBtn = document.getElementById('confirmOk');
+const confirmCancelBtn = document.getElementById('confirmCancel');
+let pendingConfirmAction = null;
+
 // Add subject
 addSubjectBtn.addEventListener('click', () => {
     const type = subjectTypeSelect.value;
@@ -107,7 +114,70 @@ subjectNameInput.addEventListener('keypress', (e) => {
 });
 
 clearAllBtn.addEventListener('click', () => {
-    clearAllSubjects();
+    if (subjects.length === 0) {
+        showToast('No subjects to clear', 'info');
+        return;
+    }
+
+    const count = subjects.length;
+    openConfirmModal(
+        `This will clear the marks you entered for ${count} subject${count === 1 ? '' : 's'}. This action cannot be undone.`,
+        clearAllSubjects
+    );
+});
+
+// --- Confirmation modal handlers ---
+let modalOpenedAt = 0;
+let modalBackdropMouseDown = false;
+
+function openConfirmModal(message, onConfirm) {
+    confirmMessage.textContent = message;
+    pendingConfirmAction = onConfirm;
+    modalOpenedAt = Date.now();
+    confirmModal.classList.remove('hidden');
+    requestAnimationFrame(() => confirmModal.classList.add('show'));
+    confirmCancelBtn.focus();
+}
+
+function closeConfirmModal() {
+    confirmModal.classList.remove('show');
+    pendingConfirmAction = null;
+    setTimeout(() => confirmModal.classList.add('hidden'), 200);
+}
+
+confirmOkBtn.addEventListener('click', () => {
+    const action = pendingConfirmAction;
+    closeConfirmModal();
+    if (action) action();
+});
+
+confirmCancelBtn.addEventListener('click', closeConfirmModal);
+
+// Only treat it as a backdrop click if the press BOTH started and ended on the
+// backdrop, and the modal has been open long enough. This stops the very
+// click that opened the modal from immediately closing it again.
+confirmModal.addEventListener('mousedown', (e) => {
+    modalBackdropMouseDown = (e.target === confirmModal);
+});
+
+confirmModal.addEventListener('click', (e) => {
+    const isBackdropClick =
+        e.target === confirmModal &&
+        modalBackdropMouseDown &&
+        (Date.now() - modalOpenedAt) > 300;
+
+    modalBackdropMouseDown = false;
+
+    if (isBackdropClick) {
+        closeConfirmModal();
+    }
+});
+
+// Escape cancels
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !confirmModal.classList.contains('hidden')) {
+        closeConfirmModal();
+    }
 });
 
 function addSubject(type, name) {

@@ -8,7 +8,7 @@ A web application for **Chandigarh University** students to calculate their seme
 - **Exact Excel Formulas** — Replicates the official CU internal marks calculation logic
 - **Horizontal Scrolling Layout** — Subjects display 2-per-row; scroll sideways for more
 - **Per-Subject Clear** — Reset the marks entered in any single subject card
-- **Clear All** — Reset every subject at once from the top toolbar
+- **Clear All** — Reset every subject at once, with a confirmation dialog first
 - **Input Validation** — Prevents entering marks above the maximum allowed
 - **Real-time Calculation** — Internal scores update instantly as you type
 - **Summary Dashboard** — Per-subject totals and a grand total
@@ -22,6 +22,7 @@ A web application for **Chandigarh University** students to calculate their seme
 3. Click **Add Subject** — a card appears and scrolls into view
 4. Enter your **obtained marks** — internal scores calculate live
 5. Use **Clear** on a card to reset just that subject, or **Clear All** to reset everything
+   (a confirmation dialog appears first so you don't wipe data by accident)
 
 Subjects are laid out two-per-row. When you add a third or more, a horizontal
 scrollbar appears at the bottom of the strip so you can swipe sideways.
