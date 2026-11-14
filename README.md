@@ -4,7 +4,7 @@ A web application for **Chandigarh University** students to calculate their seme
 
 ## ✨ Features
 
-- **4 Subject Types** — Hybrid, Theory, Practical, and Specialization (Advance C Programming)
+- **6 Subject Types** — Hybrid, Theory, Practical, Specialization, Soft Skills, and Aptitude
 - **SGPA Calculator** — Built in, using CU's official grade-point table
 - **Exact Excel Formulas** — Replicates the official CU internal marks calculation logic
 - **Horizontal Scrolling Layout** — Subjects display 2-per-row; scroll sideways for more
@@ -81,6 +81,37 @@ scrollbar appears at the bottom of the strip so you can swipe sideways.
 | Mini Project Implementation | 40 | Obt ÷ 2 |
 | Mini Project Design | 50 | Obt ÷ 2 |
 | Attendance | 2 | Obt |
+
+### Aptitude (DCPD)
+
+The subject name is fixed as **Aptitude** when this type is selected.
+
+| Component | Max Marks | Internal Score Formula |
+|-----------|-----------|------------------------|
+| Assignment/PBL | 12 | Obt ÷ 2 |
+| MST-1 | 20 | Obt ÷ 2 |
+| MST-2 | 20 | Obt ÷ 2 |
+| Quiz | 6 | Obt |
+| Surprise Test | 12 | Obt ÷ 3 |
+| Attendance | 4 | Obt |
+| EST Theory | 60 | Obt |
+
+### Soft Skills (DCPD)
+
+The subject name is fixed as **Soft Skills** when this type is selected.
+
+| Component | Max Marks | Internal Score Formula |
+|-----------|-----------|------------------------|
+| Write X | 10 | Obt |
+| Presentation | 10 | Obt |
+| Quiz-1 | 6 | Obt ÷ 3 |
+| Quiz-2 | 6 | Obt ÷ 3 |
+| Quiz-3 | 6 | Obt ÷ 3 |
+| Attendance | 4 | Obt |
+| Live Assessment-1 | 30 | Obt ÷ 3 |
+| Live Assessment-2 | 30 | Obt ÷ 3 |
+| Live Assessment-3 | 30 | Obt ÷ 3 |
+| EST Assessment | 40 | Obt |
 
 ## 📊 SGPA Calculator
 

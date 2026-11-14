@@ -74,6 +74,37 @@ const SUBJECT_TEMPLATES = {
             { name: 'Mini Project Design', maxMarks: 50, formula: (obt) => obt / 2 },
             { name: 'Attendance', maxMarks: 2, formula: (obt) => obt },
         ]
+    },
+    softSkills: {
+        label: 'Soft Skills',
+        fixedName: 'Soft Skills',
+        badgeClass: 'badge-soft-skills',
+        components: [
+            { name: 'Write X', maxMarks: 10, formula: (obt) => obt },
+            { name: 'Presentation', maxMarks: 10, formula: (obt) => obt },
+            { name: 'Quiz-1', maxMarks: 6, formula: (obt) => obt / 3 },
+            { name: 'Quiz-2', maxMarks: 6, formula: (obt) => obt / 3 },
+            { name: 'Quiz-3', maxMarks: 6, formula: (obt) => obt / 3 },
+            { name: 'Attendance', maxMarks: 4, formula: (obt) => obt },
+            { name: 'Live Assessment-1', maxMarks: 30, formula: (obt) => obt / 3 },
+            { name: 'Live Assessment-2', maxMarks: 30, formula: (obt) => obt / 3 },
+            { name: 'Live Assessment-3', maxMarks: 30, formula: (obt) => obt / 3 },
+            { name: 'EST Assessment', maxMarks: 40, formula: (obt) => obt },
+        ]
+    },
+    aptitude: {
+        label: 'Aptitude',
+        fixedName: 'Aptitude',
+        badgeClass: 'badge-aptitude',
+        components: [
+            { name: 'Assignment/PBL', maxMarks: 12, formula: (obt) => obt / 2 },
+            { name: 'MST-1', maxMarks: 20, formula: (obt) => obt / 2 },
+            { name: 'MST-2', maxMarks: 20, formula: (obt) => obt / 2 },
+            { name: 'Quiz', maxMarks: 6, formula: (obt) => obt },
+            { name: 'Surprise Test', maxMarks: 12, formula: (obt) => obt / 3 },
+            { name: 'Attendance', maxMarks: 4, formula: (obt) => obt },
+            { name: 'EST Theory', maxMarks: 60, formula: (obt) => obt },
+        ]
     }
 };
 
@@ -111,10 +142,13 @@ const sgpaCloseBtn = document.getElementById('sgpaClose');
 // Add subject
 addSubjectBtn.addEventListener('click', () => {
     const type = subjectTypeSelect.value;
-    const name = subjectNameInput.value.trim() || SUBJECT_TEMPLATES[type].label;
+    const template = SUBJECT_TEMPLATES[type];
+    const name = template.fixedName || subjectNameInput.value.trim() || template.label;
     addSubject(type, name);
-    subjectNameInput.value = '';
-    subjectNameInput.focus();
+    if (!template.fixedName) {
+        subjectNameInput.value = '';
+        subjectNameInput.focus();
+    }
 });
 
 subjectNameInput.addEventListener('keypress', (e) => {
@@ -122,6 +156,19 @@ subjectNameInput.addEventListener('keypress', (e) => {
         addSubjectBtn.click();
     }
 });
+
+subjectTypeSelect.addEventListener('change', updateSubjectNameInput);
+
+function updateSubjectNameInput() {
+    const template = SUBJECT_TEMPLATES[subjectTypeSelect.value];
+    const hasFixedName = Boolean(template.fixedName);
+
+    subjectNameInput.disabled = hasFixedName;
+    subjectNameInput.value = hasFixedName ? template.fixedName : '';
+    subjectNameInput.placeholder = hasFixedName
+        ? 'Subject name is fixed'
+        : 'Subject name (e.g., Computer Networks)';
+}
 
 clearAllBtn.addEventListener('click', () => {
     if (subjects.length === 0) {

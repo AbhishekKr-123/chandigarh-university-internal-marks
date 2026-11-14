@@ -104,6 +104,13 @@ h1 {
     border-color: var(--primary);
 }
 
+.add-subject-bar input:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    color: var(--text-muted);
+    background: rgba(51, 65, 85, 0.65);
+}
+
 .add-subject-bar input {
     flex: 1;
     min-width: 200px;
@@ -283,6 +290,16 @@ h1 {
 .badge-specialization {
     background: rgba(245, 158, 11, 0.2);
     color: #fcd34d;
+}
+
+.badge-soft-skills {
+    background: rgba(236, 72, 153, 0.2);
+    color: #f9a8d4;
+}
+
+.badge-aptitude {
+    background: rgba(168, 85, 247, 0.2);
+    color: #d8b4fe;
 }
 
 .subject-body {
